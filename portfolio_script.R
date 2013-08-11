@@ -144,12 +144,12 @@ comp.index.dts<-as.Date(index(comp.index.frame,0))
 comp.index.frame<-xts(comp.index.frame,comp.index.dts)
 
 # Chart the performance relative to the 60/40 benchmark...
-chart.RelativePerformance(comp.frame,as.vector(comp.frame$SixtyForty),
+chart.RelativePerformance(comp.frame,as.vector(comp.frame$Equal_Wt),
                           main="Relative Performace vs. Benchmark",
                           colorset=c(1:8),
                           xaxis=TRUE,
                           ylog=FALSE,
-                          legend.loc="bottomleft",
+                          legend.loc="topleft",
                           cex.legend=.8)
 
 # Chart all of the series, indexed to 100 at inception, over time.
@@ -179,14 +179,17 @@ act.premium
 
 # The weights of the portfolio at inception:
 weights_init<-(first(etfs_close)*shares)/init.invest
+names(weights_init)<-tickers.human
 weights_init
 
 # The weights of the portfolio now:
 weights_last<-(last(etfs_close)*shares)/init.invest
+names(weights_last)<-tickers.human
 weights_last
 
 # Change in weights since inception:
 weights_chg<-as.vector(weights_last)-as.vector(weights_init)
+names(weights_chg)<-tickers.human
 weights_chg
 
 # Display the weights of each asset over time:
@@ -200,6 +203,11 @@ names(port_weights)<-tickers.human
 # Or, we can use a stacked bar chart to represent the changin weights in 1 graph:
 chart.StackedBar(port_weights, colorset = 1:8, space = 0.2, cex.axis=0.8, cex.legend = 0.8, cex.lab = 1,
                  cex.main=1,las=3)
+
+# Rebalance schedule to get back to policy:
+cat("Rebalancing Schedule:","\n")
+round(weights_chg,4)
+round(-1*weights_chg*shares,4)
 
 # Display the prices of each sector over time:
 par(mfrow=c(2,2))
