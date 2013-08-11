@@ -207,7 +207,10 @@ chart.StackedBar(port_weights, colorset = 1:8, space = 0.2, cex.axis=0.8, cex.le
 # Rebalance schedule to get back to policy:
 cat("Rebalancing Schedule:","\n")
 round(weights_chg,4)
-round(-1*weights_chg*shares,4)
+rebal.orders<-round(-1*weights_chg*shares,4)
+rebal.orders
+names(rebal.orders)<-names(etfs_close)
+rebal.orders
 
 # Display the prices of each sector over time:
 par(mfrow=c(2,2))
